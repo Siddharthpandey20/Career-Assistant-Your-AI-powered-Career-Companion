@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="#" data-page="home" class="active">Home</a>
+            <a href="#" data-page="analyze">Resume Analysis</a>
+            <a href="#" data-page="enhance">Resume Enhancement</a>
+            <a href="#" data-page="jobs">Job Search</a>
+            <a href="#" data-page="trends">Career Trends</a>
+        </div>
+    </nav>
+
+    <div id="homePage" class="page active">
+        <div class="hero-section">
+            <h1>Welcome to Career Assistant</h1>
+            <p>Your AI-powered career companion</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card" data-target="analyze">
+                <i class="fas fa-file-alt"></i>
+                <h3>Resume Analysis</h3>
+                <p>Get detailed feedback on your resume</p>
+                <span class="arrow-link">→</span>
+            </div>
+            <div class="feature-card" data-target="enhance">
+                <i class="fas fa-magic"></i>
+                <h3>Resume Enhancement</h3>
+                <p>AI-powered suggestions to improve your resume</p>
+                <span class="arrow-link">→</span>
+            </div>
+            <div class="feature-card" data-target="jobs">
+                <i class="fas fa-briefcase"></i>
+                <h3>Job Search</h3>
+                <p>Find relevant job opportunities</p>
+                <span class="arrow-link">→</span>
+            </div>
+            <div class="feature-card" data-target="trends">
+                <i class="fas fa-chart-line"></i>
+                <h3>Career Trends</h3>
+                <p>Stay updated with industry trends</p>
+                <span class="arrow-link">→</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other pages content -->
+    <div id="analyzePage" class="page">
+        <iframe src="analysis.html" frameborder="0" style="width: 100%; height: 100vh; border: none;"></iframe>
+    </div>
+
+    <div id="enhancePage" class="page">
+        <iframe src="enhancement.html" frameborder="0" style="width: 100%; height: 100vh; border: none;"></iframe>
+    </div>
+
+    <div id="jobsPage" class="page">
+        <iframe src="search.html" frameborder="0" style="width: 100%; height: 100vh; border: none;"></iframe>
+    </div>
+
+    <div id="trendsPage" class="page">
+        <iframe src="trends.html" frameborder="0" style="width: 100%; height: 100vh; border: none;"></iframe>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4><i class="fas fa-code"></i> Created By</h4>
+                <p>Siddharth</p>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-envelope"></i> Contact</h4>
+                <p>siddharthpandey2611official@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h4><i class="fas fa-globe"></i> Connect</h4>
+                <p>GitHub: Siddharthpandey20</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Career Assistant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

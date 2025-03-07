@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Search - Career Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <main>
+        <div class="content-area">
+            <div class="search-container">
+                <h2>Job Search</h2>
+                <form id="jobSearchForm" class="search-form">
+                    <div class="form-group">
+                        <label for="skillsInput">Skills</label>
+                        <input type="text" id="skillsInput" name="skills" placeholder="e.g., JavaScript, Python, React" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="locationInput">Location</label>
+                        <input type="text" id="locationInput" name="location" placeholder="e.g., New York, Remote" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Search Jobs</button>
+                </form>
+
+                <div id="jobsLoading" class="loading-spinner" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Searching jobs...</p>
+                </div>
+
+                <div id="jobsOutput" class="jobs-output" style="display: none;"></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

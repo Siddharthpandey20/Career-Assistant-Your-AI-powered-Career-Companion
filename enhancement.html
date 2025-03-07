@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Enhancement - Career Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <main>
+        <div class="content-area">
+            <div class="enhancement-container">
+                <h2>Resume Enhancement</h2>
+                <form id="enhanceForm" class="enhance-form" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="fileInput">Upload your Resume</label>
+                        <input type="file" id="fileInput" name="file" accept=".pdf,.doc,.docx" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="positionInput">Target Position</label>
+                        <input type="text" id="positionInput" name="position" placeholder="e.g., Software Engineer" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Get Enhancement Suggestions</button>
+                </form>
+
+                <div id="enhanceLoading" class="loading-spinner" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Generating suggestions...</p>
+                </div>
+
+                <div id="enhanceOutput" class="enhancement-output" style="display: none;"></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

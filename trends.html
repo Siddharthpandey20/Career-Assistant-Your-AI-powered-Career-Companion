@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Trends - Career Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <main>
+        <div class="content-area">
+            <div class="trends-container">
+                <h2>Career Trends</h2>
+                <div class="trends-form">
+                    <div class="form-group">
+                        <label for="industrySelect">Select Industry</label>
+                        <select id="industrySelect" required>
+                            <option value="tech">Technology</option>
+                            <option value="finance">Finance</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="education">Education</option>
+                        </select>
+                    </div>
+                    <button id="getTrendsBtn" class="btn-primary">Get Trends</button>
+                </div>
+
+                <div id="trendsLoading" class="loading-spinner" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading trends data...</p>
+                </div>
+
+                <div id="trendsOutput" class="trends-output" style="display: none;"></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

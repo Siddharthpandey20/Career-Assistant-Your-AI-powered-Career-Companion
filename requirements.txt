@@ -1,0 +1,8 @@
+pymupdf
+termcolor
+fastapi
+uvicorn
+python-multipart
+google-generativeai
+httpx
+pydantic
