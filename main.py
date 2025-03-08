@@ -1,8 +1,6 @@
 from fastapi import FastAPI, File, UploadFile, Form,Depends,Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse,HTMLResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse,HTMLResponse
+from fastapi.responses import FileResponse,HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 import google.generativeai as genai
 import fitz,os,shutil,tempfile,textwrap,httpx,json,requests
@@ -59,6 +57,15 @@ async def serve_css():
 @app.get("/script.js")
 async def serve_js():
     return FileResponse("script.js", media_type="text/javascript")
+
+@app.get("/favicon.png")
+async def serve_favicon():
+    try:
+        return FileResponse("favicon.jpg", media_type="image/jpg")
+    except:
+        # Return a default transparent pixel if favicon.png is missing
+        transparent_pixel = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\nIDATx\x9cc\x00\x00\x00\x02\x00\x01\xe5\x27\xde\xfc\x00\x00\x00\x00IEND\xaeB`\x82'
+        return Response(content=transparent_pixel, media_type="image/jpg")
 
 #func to tae text from pdf
 
