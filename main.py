@@ -1,6 +1,7 @@
-from fastapi import FastAPI, File, UploadFile, Form,Depends,Query
+from fastapi import FastAPI, File, UploadFile, Form,Depends,Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse,HTMLResponse
+from fastapi.staticfiles import StaticFiles
 import google.generativeai as genai
 import fitz,os,shutil,tempfile,textwrap,httpx,json,requests
 from datetime import datetime
@@ -15,31 +16,22 @@ import schemas
 # Create single FastAPI instance
 app = FastAPI()
 
-# Configure CORS at the top level
-
+# Configure CORS properly
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For development only
+    allow_origins=["*"],
     allow_credentials=False,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],  # Explicitly allow POST
     allow_headers=["*"],
 )
 
-@app.get("/", response_class=HTMLResponse)
-def serve_homepage():
-    return """
-    <html>
-    <head><title>FastAPI Server</title></head>
-    <body>
-        <h1>Backend is running!</h1>
-        <p>Go to your frontend and try uploading a file.</p>
-    </body>
-    </html>
-    """
+# Serve your main HTML page directly
+@app.get("/")
+async def serve_index():
+    return FileResponse("index.html")
 
 
 #func to tae text from pdf
-
 
 def extract_text_from_pdf(file_content: bytes) -> str:
     """
@@ -96,9 +88,10 @@ async def upload_file(file: UploadFile = File(...), position: str = Form(...)):
 
 client = httpx.AsyncClient()  # Define the client
 
-@app.post("/gemini/")
+@app.post("/gemini/")  # Ensure this is defined as POST
 async def func_to_generate_content(file: UploadFile = File(...), position: str = Form(...)):
     try:
+        print(f"Received analysis request for {position}")  # Debug log
         # First read the file content
         file_content = await file.read()
 
@@ -260,25 +253,21 @@ def find_jobs(skills: str = Query(..., description="Comma-separated skills"), lo
         return {"error": "An unexpected error occurred", "details": str(e)}
 
 # func to enhance resume
-@app.post("/enhancement/")
+@app.post("/enhancement/")  # Ensure this is defined as POST
 async def func_to_enhance_resume(
     file: UploadFile = File(...),
-    position: str = Form(...)  # Make sure position is required
+    position: str = Form(...)
 ):
     try:
-        print(f"Received file: {file.filename}, position: {position}")  # Debug log
+        print(f"Received enhancement request for {position}")  # Debug log
         file_content = await file.read()
         extracted_content = extract_text_from_pdf(file_content)
 
-        request = schemas.Content(
-            position=position,
-            content=extracted_content
-        )
-
+        # Configure Gemini
         genai.configure(api_key="AIzaSyCa3MN7Nwvhq0QQRrEzEmfnHuajBWUl_zU")
         model = genai.GenerativeModel("gemini-1.5-flash")
 
-        # First prompt for analysis
+        # Generate enhancement prompt
         prompt_1 = f"""Analyze the following resume text and suggest personalized enhancements for landing the desired job role. Provide detailed recommendations in the following structured format:
             1️⃣ Enhancements Needed:
             Identify key areas for improvement in the resume.
@@ -296,8 +285,8 @@ async def func_to_enhance_resume(
             Suggest YouTube channels, MOOCs, books, or professors that provide in-depth learning on missing skills.
             Prioritize free + paid options from reputed sources.
             🔹 Additional Context:
-            Resume Text: {request.content}
-            Target Job Role: {request.position}
+            Resume Text: {extracted_content}
+            Target Job Role: {position}
             Ensure that the output is clear, practical, and actionable, providing valuable insights for job seekers. Return the response in a well-structured format."""            
         response_1 = model.generate_content(prompt_1)
 
@@ -361,6 +350,3 @@ async def func_to_enhance_resume(
             "error": f"Failed to process request: {str(e)}",
             "status": "error"
         }
-
-
-

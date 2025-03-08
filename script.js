@@ -450,8 +450,10 @@ function formatAnalysisResult(data) {
 
 function formatEnhancementResult(data) {
     if (!data || !data.enhancements) {
-        return '<p class="error-message">No enhancement data received</p>';
+        return '<div class="error-message">Failed to process enhancement request</div>';
     }
+
+    const { enhancements, learning_resources } = data;
 
     return `
         <div class="enhancement-result">
@@ -460,38 +462,50 @@ function formatEnhancementResult(data) {
                 
                 <h4>Overall Improvements</h4>
                 <ul>
-                    ${data.enhancements.overall_improvements.map(imp => `<li>${imp}</li>`).join('')}
+                    ${Array.isArray(enhancements.overall_improvements) 
+                        ? enhancements.overall_improvements.map(imp => `<li>${imp}</li>`).join('')
+                        : `<li>${enhancements.overall_improvements}</li>`}
                 </ul>
                 
-                <h4>Skills to Add</h4>
+                <h4>Recommended Skills</h4>
                 <div class="skills-list">
-                    ${data.enhancements.skills_to_add.map(skill => 
-                        `<span class="skill-badge missing">${skill}</span>`).join('')}
+                    ${Array.isArray(enhancements.skills_to_add)
+                        ? enhancements.skills_to_add.map(skill => 
+                            `<span class="skill-badge missing">${skill}</span>`).join('')
+                        : '<p>No specific skills suggested</p>'}
                 </div>
                 
                 <h4>Recommended Certifications</h4>
                 <ul>
-                    ${data.enhancements.certifications.map(cert => `<li>${cert}</li>`).join('')}
+                    ${Array.isArray(enhancements.certifications)
+                        ? enhancements.certifications.map(cert => `<li>${cert}</li>`).join('')
+                        : '<li>No specific certifications suggested</li>'}
                 </ul>
             </div>
             
-            ${data.learning_resources ? `
+            ${learning_resources ? `
                 <div class="learning-section">
                     <h3>Learning Resources</h3>
                     
                     <h4>Online Courses</h4>
                     <ul>
-                        ${data.learning_resources.online_courses.map(course => `<li>${course}</li>`).join('')}
+                        ${Array.isArray(learning_resources.online_courses)
+                            ? learning_resources.online_courses.map(course => `<li>${course}</li>`).join('')
+                            : '<li>No specific courses suggested</li>'}
                     </ul>
                     
                     <h4>YouTube Channels</h4>
                     <ul>
-                        ${data.learning_resources.youtube_channels.map(channel => `<li>${channel}</li>`).join('')}
+                        ${Array.isArray(learning_resources.youtube_channels)
+                            ? learning_resources.youtube_channels.map(channel => `<li>${channel}</li>`).join('')
+                            : '<li>No specific channels suggested</li>'}
                     </ul>
                     
                     <h4>Recommended Books</h4>
                     <ul>
-                        ${data.learning_resources.books.map(book => `<li>${book}</li>`).join('')}
+                        ${Array.isArray(learning_resources.books)
+                            ? learning_resources.books.map(book => `<li>${book}</li>`).join('')
+                            : '<li>No specific books suggested</li>'}
                     </ul>
                 </div>
             ` : ''}
