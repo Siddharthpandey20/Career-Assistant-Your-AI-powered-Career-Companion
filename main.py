@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, Form,Depends,Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 import google.generativeai as genai
 import fitz,os,shutil,tempfile,textwrap,httpx,json,requests
 from datetime import datetime
@@ -14,7 +15,6 @@ import schemas
 
 # Create single FastAPI instance
 app = FastAPI()
-
 # Configure CORS at the top level
 
 app.add_middleware(
@@ -25,20 +25,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/", response_class=HTMLResponse)
-def serve_homepage():
-    return """
-    <html>
-    <head><title>FastAPI Server</title></head>
-    <body>
-        <h1>Backend is running!</h1>
-        <p>Go to your frontend and try uploading a file.</p>
-    </body>
-    </html>
-    """
+app.mount("/", StaticFiles(directory=".", html=True), name="frontend")
+
+# Serve your main HTML page directly
+@app.get("/")
+async def serve_index():
+    return FileResponse("index.html")
 
 
-#func to tae text from pdf
+#func to take text from pdf
 
 
 def extract_text_from_pdf(file_content: bytes) -> str:
