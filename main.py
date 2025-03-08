@@ -27,11 +27,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve your main HTML page directly
+# Remove static file mounting
+# app.mount("/static", StaticFiles(directory="."), name="static")
+
+# Serve HTML pages
 @app.get("/")
 async def serve_index():
     return FileResponse("index.html")
 
+@app.get("/analysis.html")
+async def serve_analysis():
+    return FileResponse("analysis.html")
+
+@app.get("/enhancement.html")
+async def serve_enhancement():
+    return FileResponse("enhancement.html")
+
+@app.get("/search.html")
+async def serve_search():
+    return FileResponse("search.html")
+
+@app.get("/trends.html")
+async def serve_trends():
+    return FileResponse("trends.html")
+
+# Serve static files
+@app.get("/styles.css")
+async def serve_css():
+    return FileResponse("styles.css", media_type="text/css")
+
+@app.get("/script.js")
+async def serve_js():
+    return FileResponse("script.js", media_type="text/javascript")
 
 #func to tae text from pdf
 
