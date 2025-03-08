@@ -6,6 +6,18 @@ import google.generativeai as genai
 import fitz,os,shutil,tempfile,textwrap,httpx,json,requests
 from datetime import datetime
 import schemas
+from dotenv import load_dotenv
+from config import GEMINI_API_KEY, JSEARCH_API_KEY, JSEARCH_URL, GEMINI_MODEL, JSEARCH_HEADERS
+
+# Load environment variables at the start
+load_dotenv()
+
+# Get API keys and config from environment variables
+# GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+# JSEARCH_API_KEY = os.getenv('JSEARCH_API_KEY')
+# JSEARCH_URL = os.getenv('JSEARCH_URL')
+# GEMINI_MODEL = os.getenv('GEMINI_MODEL')
+
 # PyMuPDF for extracting text from PDFs
 # shutil  # For handling file operations
 # tempfile  # For creating temporary files
@@ -124,6 +136,15 @@ async def upload_file(file: UploadFile = File(...), position: str = Form(...)):
 
 client = httpx.AsyncClient()  # Define the client
 
+# Update Gemini configuration
+genai.configure(api_key=GEMINI_API_KEY)
+
+# Update JSearch configuration
+headers = {
+    "X-RapidAPI-Key": JSEARCH_API_KEY,
+    "X-RapidAPI-Host": "jsearch.p.rapidapi.com"
+}
+
 @app.post("/gemini/")  # Ensure this is defined as POST
 async def func_to_generate_content(file: UploadFile = File(...), position: str = Form(...)):
     try:
@@ -141,8 +162,7 @@ async def func_to_generate_content(file: UploadFile = File(...), position: str =
         )
 
         # Proceed with the Gemini AI logic
-        genai.configure(api_key="AIzaSyCa3MN7Nwvhq0QQRrEzEmfnHuajBWUl_zU")
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel(GEMINI_MODEL)
 
         # First prompt for analysis
         prompt_1 = f"""Analyze this resume: {request.content}
@@ -208,13 +228,6 @@ async def func_to_generate_content(file: UploadFile = File(...), position: str =
     
 
 # func to search for jobs
-RAPIDAPI_KEY = "ac2b655b60msh8e60987fa39ab1fp1f04f3jsn86ef5cf57df2" 
-JSEARCH_URL = "https://jsearch.p.rapidapi.com/search"
-
-headers = {
-    "X-RapidAPI-Key": RAPIDAPI_KEY,
-    "X-RapidAPI-Host": "jsearch.p.rapidapi.com"
-}
 
 @app.get("/find_jobs")
 def find_jobs(skills: str = Query(..., description="Comma-separated skills"), location: str = Query(..., description="Location")):
@@ -239,7 +252,7 @@ def find_jobs(skills: str = Query(..., description="Comma-separated skills"), lo
     
     try:
         print(f"Sending request with params: {params}")  # Debug log
-        response = requests.get(JSEARCH_URL, headers=headers, params=params)
+        response = requests.get(JSEARCH_URL, headers=JSEARCH_HEADERS, params=params)
         print(f"Response status: {response.status_code}")  # Debug log
         
         # Handle common API response codes
@@ -300,8 +313,8 @@ async def func_to_enhance_resume(
         extracted_content = extract_text_from_pdf(file_content)
 
         # Configure Gemini
-        genai.configure(api_key="AIzaSyCa3MN7Nwvhq0QQRrEzEmfnHuajBWUl_zU")
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        genai.configure(api_key=GEMINI_API_KEY)
+        model = genai.GenerativeModel(GEMINI_MODEL)
 
         # Generate enhancement prompt
         prompt_1 = f"""Analyze the following resume text and suggest personalized enhancements for landing the desired job role. Provide detailed recommendations in the following structured format:
