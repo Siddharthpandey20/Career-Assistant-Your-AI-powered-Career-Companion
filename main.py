@@ -2,6 +2,8 @@ from fastapi import FastAPI, File, UploadFile, Form,Depends,Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse,HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse,HTMLResponse
+from fastapi.staticfiles import StaticFiles
 import google.generativeai as genai
 import fitz,os,shutil,tempfile,textwrap,httpx,json,requests
 from datetime import datetime
